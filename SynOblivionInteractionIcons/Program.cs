@@ -330,7 +330,7 @@ namespace SynOblivionInteractionIcons
                     activator.EditorID.StartsWith("EVGSelector") &&
                     activateTextOverride.ToUpperContains("ICONOGRAPHIA"))
                 {
-                    state.PatchMod.Activators.GetOrAddAsOverride(activator);
+                    // Skip processing - the activator already has the correct icon
                     continue;
                 }
 
