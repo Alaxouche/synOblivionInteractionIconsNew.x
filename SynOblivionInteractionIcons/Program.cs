@@ -107,11 +107,17 @@ namespace SynOblivionInteractionIcons
                     iconCharacter = "Q";
                 }
 
-                var floraPatch = state.PatchMod.Florae.GetOrAddAsOverride(flora);
-
+                // Compute the new ActivateTextOverride value
                 string newActivateTextOverride = "<font face=\"Iconographia\">" + iconCharacter + "</font>";
-                floraPatch.ActivateTextOverride = iconColor == null ? newActivateTextOverride
-                                                                    : "<font color='" + iconColor + "'>" + newActivateTextOverride + "</font>";
+                string computedOverride = iconColor == null ? newActivateTextOverride
+                                                             : "<font color='" + iconColor + "'>" + newActivateTextOverride + "</font>";
+
+                // Only create override if the value is different
+                if (activateTextOverride != computedOverride)
+                {
+                    var floraPatch = state.PatchMod.Florae.GetOrAddAsOverride(flora);
+                    floraPatch.ActivateTextOverride = computedOverride;
+                }
             }
 
             foreach (var flora in OblivionIconInteractorESP.Mod.Florae)
@@ -322,11 +328,17 @@ namespace SynOblivionInteractionIcons
                     continue;
                 }
 
-                var activatorPatch = state.PatchMod.Activators.GetOrAddAsOverride(activator);
-
+                // Compute the new ActivateTextOverride value
                 string newActivateTextOverride = "<font face=\"Iconographia\">" + iconCharacter + "</font>";
-                activatorPatch.ActivateTextOverride = iconColor == null ? newActivateTextOverride
-                                                                        : "<font color='" + iconColor + "'>" + newActivateTextOverride + "</font>";
+                string computedOverride = iconColor == null ? newActivateTextOverride
+                                                             : "<font color='" + iconColor + "'>" + newActivateTextOverride + "</font>";
+
+                // Only create override if the value is different
+                if (activateTextOverride != computedOverride)
+                {
+                    var activatorPatch = state.PatchMod.Activators.GetOrAddAsOverride(activator);
+                    activatorPatch.ActivateTextOverride = computedOverride;
+                }
             }
 
             foreach (var activator in OblivionIconInteractorESP.Mod.Activators)
