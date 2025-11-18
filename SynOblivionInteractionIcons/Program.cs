@@ -64,11 +64,18 @@ namespace SynOblivionInteractionIcons
             Console.WriteLine("Patching Flora");
             foreach (var flora in state.LoadOrder.PriorityOrder.OnlyEnabled().Flora().WinningOverrides())
             {
+                var activateTextOverride = flora.ActivateTextOverride != null ? flora.ActivateTextOverride.String : null;
+                
+                // Skip if already has Iconographia icon
+                if (activateTextOverride != null && activateTextOverride.ToUpperContains("ICONOGRAPHIA"))
+                {
+                    continue;
+                }
+                
                 string iconCharacter = "Q"; // Default
                 string? iconColor = null;
 
                 var name = flora.Name != null ? flora.Name.String : null;
-                var activateTextOverride = flora.ActivateTextOverride != null ? flora.ActivateTextOverride.String : null;
 
                 // Mushrooms
                 if (flora.HarvestSound.FormKey.Equals(Skyrim.SoundDescriptor.ITMIngredientMushroomUp.FormKey)
@@ -139,12 +146,18 @@ namespace SynOblivionInteractionIcons
             Console.WriteLine("Patching Activators");
             foreach (var activator in state.LoadOrder.PriorityOrder.OnlyEnabled().Activator().WinningOverrides())
             {
-                string iconCharacter = "W"; // Default
-                string? iconColor = null;
-
                 var name = activator.Name != null ? activator.Name.String : null;
                 var editorId = activator.EditorID != null ? activator.EditorID.ToString() : null;
                 var activateTextOverride = activator.ActivateTextOverride != null ? activator.ActivateTextOverride.String : null;
+
+                // Skip if already has Iconographia icon
+                if (activateTextOverride != null && activateTextOverride.ToUpperContains("ICONOGRAPHIA"))
+                {
+                    continue;
+                }
+                
+                string iconCharacter = "W"; // Default
+                string? iconColor = null;
 
                 //Blacklisting superfluos entries
                 if (activator.ActivateTextOverride == null && editorId.ToUpperContainsAny("TRIGGER", "FX"))
@@ -330,7 +343,7 @@ namespace SynOblivionInteractionIcons
                     activator.EditorID.StartsWith("EVGSelector") &&
                     activateTextOverride.ToUpperContains("ICONOGRAPHIA"))
                 {
-                    state.PatchMod.Activators.GetOrAddAsOverride(activator);
+                    // Skip processing - the activator already has the correct icon
                     continue;
                 }
 
