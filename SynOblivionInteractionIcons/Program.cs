@@ -107,20 +107,32 @@ namespace SynOblivionInteractionIcons
                     iconCharacter = "Q";
                 }
 
-                var floraPatch = state.PatchMod.Florae.GetOrAddAsOverride(flora);
-
+                // Compute the new ActivateTextOverride value
                 string newActivateTextOverride = "<font face=\"Iconographia\">" + iconCharacter + "</font>";
-                floraPatch.ActivateTextOverride = iconColor == null ? newActivateTextOverride
-                                                                    : "<font color='" + iconColor + "'>" + newActivateTextOverride + "</font>";
+                string computedOverride = iconColor == null ? newActivateTextOverride
+                                                             : "<font color='" + iconColor + "'>" + newActivateTextOverride + "</font>";
+
+                // Only create override if the value is different
+                if (activateTextOverride != computedOverride)
+                {
+                    var floraPatch = state.PatchMod.Florae.GetOrAddAsOverride(flora);
+                    floraPatch.ActivateTextOverride = computedOverride;
+                }
             }
 
             foreach (var flora in OblivionIconInteractorESP.Mod.Florae)
             {
                 var winningOverride = winningFlora.Where(x => x.FormKey == flora.FormKey).First();
-                var PatchFlora = state.PatchMod.Florae.GetOrAddAsOverride(winningOverride);
 
                 if (flora.ActivateTextOverride == null) continue;
-                PatchFlora.ActivateTextOverride = flora.ActivateTextOverride.String;
+                
+                // Only create override if the value is different from the winning override
+                var currentValue = winningOverride.ActivateTextOverride != null ? winningOverride.ActivateTextOverride.String : null;
+                if (currentValue != flora.ActivateTextOverride.String)
+                {
+                    var PatchFlora = state.PatchMod.Florae.GetOrAddAsOverride(winningOverride);
+                    PatchFlora.ActivateTextOverride = flora.ActivateTextOverride.String;
+                }
             }
 
 
@@ -322,20 +334,32 @@ namespace SynOblivionInteractionIcons
                     continue;
                 }
 
-                var activatorPatch = state.PatchMod.Activators.GetOrAddAsOverride(activator);
-
+                // Compute the new ActivateTextOverride value
                 string newActivateTextOverride = "<font face=\"Iconographia\">" + iconCharacter + "</font>";
-                activatorPatch.ActivateTextOverride = iconColor == null ? newActivateTextOverride
-                                                                        : "<font color='" + iconColor + "'>" + newActivateTextOverride + "</font>";
+                string computedOverride = iconColor == null ? newActivateTextOverride
+                                                             : "<font color='" + iconColor + "'>" + newActivateTextOverride + "</font>";
+
+                // Only create override if the value is different
+                if (activateTextOverride != computedOverride)
+                {
+                    var activatorPatch = state.PatchMod.Activators.GetOrAddAsOverride(activator);
+                    activatorPatch.ActivateTextOverride = computedOverride;
+                }
             }
 
             foreach (var activator in OblivionIconInteractorESP.Mod.Activators)
             {
                 var winningOverride = winningActivator.Where(x => x.FormKey == activator.FormKey).First();
-                var activatorPatch = state.PatchMod.Activators.GetOrAddAsOverride(winningOverride);
 
                 if (activator.ActivateTextOverride == null) continue;
-                activatorPatch.ActivateTextOverride = activator.ActivateTextOverride.String;
+                
+                // Only create override if the value is different from the winning override
+                var currentValue = winningOverride.ActivateTextOverride != null ? winningOverride.ActivateTextOverride.String : null;
+                if (currentValue != activator.ActivateTextOverride.String)
+                {
+                    var activatorPatch = state.PatchMod.Activators.GetOrAddAsOverride(winningOverride);
+                    activatorPatch.ActivateTextOverride = activator.ActivateTextOverride.String;
+                }
             }
         }
     }
