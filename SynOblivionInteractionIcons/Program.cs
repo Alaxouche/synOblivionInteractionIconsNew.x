@@ -66,8 +66,14 @@ namespace SynOblivionInteractionIcons
             {
                 var activateTextOverride = flora.ActivateTextOverride != null ? flora.ActivateTextOverride.String : null;
                 
+                // Skip if no ActivateTextOverride - these are not interactive flora
+                if (activateTextOverride == null)
+                {
+                    continue;
+                }
+                
                 // Skip if already has Iconographia icon
-                if (activateTextOverride != null && activateTextOverride.ToUpperContains("ICONOGRAPHIA"))
+                if (activateTextOverride.ToUpperContains("ICONOGRAPHIA"))
                 {
                     continue;
                 }
@@ -150,22 +156,23 @@ namespace SynOblivionInteractionIcons
                 var editorId = activator.EditorID != null ? activator.EditorID.ToString() : null;
                 var activateTextOverride = activator.ActivateTextOverride != null ? activator.ActivateTextOverride.String : null;
 
+                // Skip if no ActivateTextOverride - these are not interactive activators
+                if (activateTextOverride == null)
+                {
+                    continue;
+                }
+
                 // Skip if already has Iconographia icon
-                if (activateTextOverride != null && activateTextOverride.ToUpperContains("ICONOGRAPHIA"))
+                if (activateTextOverride.ToUpperContains("ICONOGRAPHIA"))
                 {
                     continue;
                 }
                 
                 string iconCharacter = "W"; // Default
                 string? iconColor = null;
-
-                //Blacklisting superfluos entries
-                if (activator.ActivateTextOverride == null && editorId.ToUpperContainsAny("TRIGGER", "FX"))
-                {
-                    continue;
-                }
+                
                 // Steal
-                else if (activateTextOverride.ToUpperEquals("STEAL"))
+                if (activateTextOverride.ToUpperEquals("STEAL"))
                 {
                     iconColor = "ff0000";
                     iconCharacter = "S";
